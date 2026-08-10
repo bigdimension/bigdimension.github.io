@@ -117,28 +117,41 @@
             transform: translateY(-0.5px);
         }
 
-        /* 🌌 5. SECÇÃO PRINCIPAL (Hero Section) */
+     /* 🌌 5. SECÇÃO PRINCIPAL COM A GALÁXIA EM DEGRADÉ (Hero Section) */
         .hero-section {
-            max-width: 1200px;
-            margin: 80px auto 40px auto;
-            padding: 0 40px;
+            width: 100%;
+            min-height: 50vh;
+            margin: 0;
+            padding: 100px 80px;
             text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            
+            /* Esta linha faz a magia: põe a galáxia e faz um degradé suave que se funde com o fundo claro (#f9fafb) do site */
+            background-image: linear-gradient(to bottom, rgba(3, 7, 18, 0.2), #f9fafb), url('WhatsApp Image 2026-08-10 at 13.27.16.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .hero-section h1 {
-            font-size: 56px;
+            font-size: 54px;
             font-weight: 700;
             letter-spacing: -1.5px;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            color: #111827;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            color: #ffffff; /* Texto branco brilhante para ler em cima do espaço */
+            max-width: 850px;
+            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5); /* Sombra para dar um relevo lindo */
         }
 
         .hero-section p {
             font-size: 20px;
             line-height: 1.6;
-            color: #4b5563;
-            max-width: 700px;
+            color: #f3f4f6; /* Letras claras para contrastar com a poeira cósmica */
+            max-width: 650px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
         /* 🧱 6. GRELHA DE CARTÕES DE INVESTIGAÇÃO (Latest Research) */
