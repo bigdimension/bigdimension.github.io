@@ -5,112 +5,265 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Dimension</title>
     <style>
-        body {
+        /* 🌌 1. RESET & FUNDO LIMPO (Estilo DeepMind) */
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f8f9fa;
-            color: #1f1f1f;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f9fafb; /* Cinza ultra-claro premium */
+            color: #111827;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* 🛸 2. INTRODUÇÃO CINEMATOGRÁFICA (Loader) */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #030712; /* Escuro cósmico profundo */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fecharLoader 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.5s;
+        }
+
+        .logo-animate {
+            font-size: 38px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: scale(0.96);
+            animation: surgirNome 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+            text-shadow: 0 0 30px rgba(0, 68, 255, 0.4);
+        }
+
+        @keyframes surgirNome {
+            0% { opacity: 0; transform: scale(0.96); filter: blur(4px); }
+            45% { opacity: 1; transform: scale(1); filter: blur(0); }
+            75% { opacity: 1; transform: scale(1); filter: blur(0); }
+            100% { opacity: 0; transform: scale(1.02); filter: blur(2px); }
+        }
+
+        @keyframes fecharLoader {
+            0% { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        /* 👑 3. MENU SUPERIOR FIXO (Sticky Header) */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 24px 80px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid #ef444400; /* Invisível inicialmente */
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px); /* Efeito vidro fosco */
         }
 
-        .logo {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Logótipo em Vetor Puro (SVG) escrito diretamente em código */
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            fill: #0044ff;
+        }
+
+        .logo-text {
             font-weight: 700;
-            font-size: 20px;
-            color: #0044ff;
+            font-size: 21px;
+            color: #111827;
+            letter-spacing: -0.3px;
+        }
+
+        /* ✨ 4. BOTÕES DE TRANSIÇÃO SUAVE (Cubic-Bezier) */
+        nav {
+            display: flex;
+            gap: 8px;
         }
 
         .nav-btn {
             background: none;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 24px;
             font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
-            border-radius: 20px;
-            transition: all 0.4s ease;
+            border-radius: 24px;
+            color: #4b5563;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .nav-btn:hover {
             background-color: #f0f4ff;
             color: #0044ff;
+            transform: translateY(-0.5px);
         }
 
+        /* 🌌 5. SECÇÃO PRINCIPAL (Hero Section) */
+        .hero-section {
+            max-width: 1200px;
+            margin: 80px auto 40px auto;
+            padding: 0 40px;
+            text-align: left;
+        }
+
+        .hero-section h1 {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .hero-section p {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #4b5563;
+            max-width: 700px;
+        }
+
+        /* 🧱 6. GRELHA DE CARTÕES DE INVESTIGAÇÃO (Latest Research) */
         .container {
             max-width: 1200px;
-            margin: 60px auto;
-            padding: 0 20px;
+            margin: 40px auto 100px auto;
+            padding: 0 40px;
         }
 
-        h2 {
-            font-size: 28px;
-            margin-bottom: 30px;
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 32px;
+            color: #111827;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
         }
 
+        /* 🗂️ 7. OS CARTÕES PREMIUM */
         .card {
             background-color: #ffffff;
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid #eef0f2;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 20px; /* Cantos arredondados premium */
+            padding: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            cursor: pointer;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transform: translateY(-6px); /* Efeito flutuante */
+            box-shadow: 0 20px 40px -10px rgba(0, 44, 255, 0.08);
+            border-color: rgba(0, 68, 255, 0.1);
         }
 
         .card-tag {
-            font-size: 12px;
-            color: #707070;
+            font-size: 11px;
+            color: #0044ff;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            display: inline-block;
         }
 
         .card-title {
-            font-size: 22px;
-            margin: 15px 0;
-            line-height: 1.4;
+            font-size: 23px;
+            font-weight: 600;
+            line-height: 1.35;
+            color: #111827;
+            letter-spacing: -0.4px;
+        }
+
+        /* Ajustes para ecrãs de telemóvel */
+        @media (max-width: 768px) {
+            header { padding: 20px 30px; }
+            .hero-section h1 { font-size: 40px; }
+            .hero-section { margin-top: 40px; }
+            .container { margin-bottom: 60px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- 🛸 LOADER CINEMATOGRÁFICO -->
+    <div id="loader" class="loader">
+        <div class="logo-animate">BigDimension</div>
+    </div>
+
+    <!-- 👑 HEADER PRINCIPAL -->
     <header>
-        <div class="logo">Big Dimension</div>
+        <div class="logo-container">
+            <!-- Ícone Geométrico Vetorial SVG criado diretamente em código -->
+            <svg class="logo-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" stroke="#0044ff" stroke-width="3" fill="none"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <div class="logo-text">Big Dimension</div>
+        </div>
         <nav>
             <button class="nav-btn">Research</button>
             <button class="nav-btn">Frameworks</button>
         </nav>
     </header>
 
+    <!-- 🌌 HERO SECTION DE ENTRADA -->
+    <section class="hero-section">
+        <h1>Anchoring artificial intelligence to real molecular geometry.</h1>
+        <p>An independent research studio engineering a new class of responsive, agent-based systems and digital biochemistry.</p>
+    </section>
+
+    <!-- 🧱 GRELHA DE INVESTIGAÇÕES (DEEPMIND STYLE) -->
     <div class="container">
-        <h2>Latest research</h2>
+        <h2 class="section-title">Latest research</h2>
         
         <div class="grid">
+            <!-- Cartão 1 -->
             <div class="card">
-                <div class="card-tag">Science</div>
-                <div class="card-title">Predicting autonomous agent behavior within dynamic synaptic structures.</div>
+                <span class="card-tag">Biochemistry</span>
+                <h3 class="card-title">Predicting autonomous agent behavior within dynamic synaptic structures.</h3>
             </div>
 
+            <!-- Cartão 2 -->
             <div class="card">
-                <div class="card-tag">Physics</div>
-                <div class="card-title">Applying real-time electrostatic vector matrices to abstract computation.</div>
+                <span class="card-tag">Computational Physics</span>
+                <h3 class="card-title">Applying real-time electrostatic vector matrices to abstract computation.</h3>
             </div>
         </div>
     </div>
+
+    <!-- SCRIPT PARA GARANTIR A SUAVIDADE DO LOADER -->
+    <script>
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+            }, 3100); // 3.1 segundos para processar o fecho perfeito
+        });
+    </script>
 
 </body>
 </html>
