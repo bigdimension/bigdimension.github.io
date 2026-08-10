@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Dimension</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #1f1f1f;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: #0044ff;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #f0f4ff;
+            color: #0044ff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #eef0f2;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-tag {
+            font-size: 12px;
+            color: #707070;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            margin: 15px 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Big Dimension</div>
+        <nav>
+            <button class="nav-btn">Research</button>
+            <button class="nav-btn">Frameworks</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Latest research</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <div class="card-tag">Science</div>
+                <div class="card-title">Predicting autonomous agent behavior within dynamic synaptic structures.</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Physics</div>
+                <div class="card-title">Applying real-time electrostatic vector matrices to abstract computation.</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
