@@ -149,9 +149,18 @@
         .hero-section p {
             font-size: 20px;
             line-height: 1.6;
-            color: #f3f4f6; /* Letras claras para contrastar com a poeira cósmica */
+            color: #ffffff; /* Branco puro */
+            font-weight: 600; /* Engrossa as letras para ficarem fortes */
             max-width: 650px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            margin: 0;
+            padding: 0;
+            display: block;
+            
+            /* Sombra cirúrgica que cria o contorno escuro e destaca o subtítulo */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 
+                         -1px -1px 0px rgba(0, 0, 0, 0.8),
+                          1px -1px 0px rgba(0, 0, 0, 0.8);
+        }
         }
 
         /* 🧱 6. GRELHA DE CARTÕES DE INVESTIGAÇÃO (Latest Research) */
