@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Dimension</title>
-        <!-- 👇 ADD ALL THE SEO STUFF HERE 👇 -->
+
     <meta name="description" content="Big Dimension: An independent research studio engineering responsive, agent-based systems anchored in real molecular geometry and digital biochemistry.">
     <meta name="keywords" content="AI research, molecular geometry, agent-based systems, biochemistry, computational physics">
-    
+
     <meta property="og:title" content="Big Dimension - AI Research Studio">
     <meta property="og:description" content="An independent research studio engineering a new class of responsive, agent-based systems and digital biochemistry.">
     <meta property="og:image" content="https://bigdimension.github.io/WhatsApp Image 2026-08-10 at 13.05.44.jpeg">
     <meta property="og:url" content="https://bigdimension.github.io">
     <meta property="og:type" content="website">
-    
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -24,294 +24,272 @@
       "logo": "https://bigdimension.github.io/favicon.png"
     }
     </script>
-    <!-- 👆 END SEO STUFF 👆 -->
+
     <link rel="icon" href="/favicon.png" type="image/png">
+
     <style>
-        /* 🌌 1. RESET & FUNDO LIMPO (Estilo DeepMind) */
+        :root {
+            --bg: #ffffff;
+            --panel: #f7f7f5;
+            --text: #111827;
+            --muted: #4b5563;
+            --line: #e5e7eb;
+            --accent: #0044ff;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f9fafb; /* Cinza ultra-claro premium */
-            color: #111827;
-            overflow-x: hidden;
+            background: var(--bg);
+            color: var(--text);
             -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
 
-        /* 🛸 2. INTRODUÇÃO CINEMATOGRÁFICA (Loader) */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #030712; /* Escuro cósmico profundo */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            animation: fecharLoader 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 2.5s;
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
-        .logo-animate {
-            font-size: 38px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 2px;
-            opacity: 0;
-            transform: scale(0.96);
-            animation: surgirNome 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
-            text-shadow: 0 0 30px rgba(0, 68, 255, 0.4);
-        }
-
-        @keyframes surgirNome {
-            0% { opacity: 0; transform: scale(0.96); filter: blur(4px); }
-            45% { opacity: 1; transform: scale(1); filter: blur(0); }
-            75% { opacity: 1; transform: scale(1); filter: blur(0); }
-            100% { opacity: 0; transform: scale(1.02); filter: blur(2px); }
-        }
-
-        @keyframes fecharLoader {
-            0% { opacity: 1; visibility: visible; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-
-        /* 👑 3. MENU SUPERIOR FIXO (Sticky Header) */
         header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 18px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .brand img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            color: var(--text);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 10px 16px;
+            border-radius: 999px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.25s ease, color 0.25s ease;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: var(--text);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 72px 32px 48px;
+        }
+
+        .hero {
+            max-width: 960px;
+            padding-top: 24px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 22px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 6rem);
+            line-height: 0.97;
+            letter-spacing: -0.07em;
+            font-weight: 700;
+            max-width: 900px;
+            margin-bottom: 22px;
+        }
+
+        .hero p {
+            max-width: 760px;
+            font-size: clamp(1.05rem, 2vw, 1.5rem);
+            line-height: 1.5;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .quote-section {
+            max-width: 1200px;
+            margin: 84px auto 20px;
+            padding: 0 32px 36px;
+            border-top: 1px solid var(--line);
+        }
+
+        .quote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        blockquote {
+            background: var(--panel);
+            border: 1px solid rgba(17,24,39,0.04);
+            border-radius: 18px;
+            padding: 24px 22px;
+            color: var(--text);
+            font-size: 1.02rem;
+            line-height: 1.7;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        footer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px 32px 40px;
+            border-top: 1px solid var(--line);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 24px 80px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid #ef444400; /* Invisível inicialmente */
-            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(20px); /* Efeito vidro fosco */
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .logo-container {
+        .footer-copy {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 18px;
+            flex-wrap: wrap;
         }
 
-        /* Logótipo em Vetor Puro (SVG) escrito diretamente em código */
-        .logo-icon {
-            width: 24px;
-            height: 24px;
-            fill: #0044ff;
+        .footer-links a {
+            color: var(--muted);
+            font-size: 0.9rem;
+            transition: color 0.25s ease;
         }
 
-        .logo-text {
-            font-weight: 700;
-            font-size: 21px;
-            color: #111827;
-            letter-spacing: -0.3px;
+        .footer-links a:hover {
+            color: var(--text);
         }
 
-        /* ✨ 4. BOTÕES DE TRANSIÇÃO SUAVE (Cubic-Bezier) */
-        nav {
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-btn {
-            background: none;
-            border: none;
-            padding: 10px 24px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 24px;
-            color: #4b5563;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .nav-btn:hover {
-            background-color: #f0f4ff;
-            color: #0044ff;
-            transform: translateY(-0.5px);
-        }
-
-     /* 🌌 5. SECÇÃO PRINCIPAL COM A GALÁXIA EM DEGRADÉ (Hero Section) */
-        .hero-section {
-            width: 100%;
-            min-height: 50vh;
-            margin: 0;
-            padding: 100px 80px;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            
-            /* Esta linha faz a magia: põe a galáxia e faz um degradé suave que se funde com o fundo claro (#f9fafb) do site */
-            background-image: linear-gradient(to bottom, rgba(3, 7, 18, 0.2), #f9fafb), url('WhatsApp Image 2026-08-10 at 13.27.16.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .hero-section h1 {
-            font-size: 54px;
-            font-weight: 700;
-            letter-spacing: -1.5px;
-            line-height: 1.15;
-            margin-bottom: 24px;
-            color: #ffffff; /* Texto branco brilhante para ler em cima do espaço */
-            max-width: 850px;
-            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5); /* Sombra para dar um relevo lindo */
-        }
-
-        .hero-section p {
-            font-size: 20px;
-            line-height: 1.6;
-            color: #ffffff; /* Branco puro */
-            font-weight: 600; /* Engrossa as letras para ficarem fortes */
-            max-width: 650px;
-            margin: 0;
-            padding: 0;
-            display: block;
-            
-         
-        }
-        
-
-        /* 🧱 6. GRELHA DE CARTÕES DE INVESTIGAÇÃO (Latest Research) */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto 100px auto;
-            padding: 0 40px;
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 32px;
-            color: #111827;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 32px;
-        }
-
-        /* 🗂️ 7. OS CARTÕES PREMIUM */
-        .card {
-            background-color: #ffffff;
-            border-radius: 20px; /* Cantos arredondados premium */
-            padding: 40px;
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-            cursor: pointer;
-        }
-
-        .card:hover {
-            transform: translateY(-6px); /* Efeito flutuante */
-            box-shadow: 0 20px 40px -10px rgba(0, 44, 255, 0.08);
-            border-color: rgba(0, 68, 255, 0.1);
-        }
-
-        .card-tag {
-            font-size: 11px;
-            color: #0044ff;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 16px;
-            display: inline-block;
-        }
-
-        .card-title {
-            font-size: 23px;
-            font-weight: 600;
-            line-height: 1.35;
-            color: #111827;
-            letter-spacing: -0.4px;
-        }
-
-        /* Ajustes para ecrãs de telemóvel */
         @media (max-width: 768px) {
-            header { padding: 20px 30px; }
-            .hero-section h1 { font-size: 40px; }
-            .hero-section { margin-top: 40px; }
-            .container { margin-bottom: 60px; }
+            .header-inner,
+            main,
+            .quote-section,
+            footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .header-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            .nav-link {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .hero {
+                padding-top: 8px;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- 🛸 LOADER CINEMATOGRÁFICO -->
-    <div id="loader" class="loader">
-        <div class="logo-animate">BigDimension</div>
-    </div>
-
-    <!-- 👑 HEADER PRINCIPAL -->
     <header>
-        <div class="logo-container">
-            <!-- Ícone Geométrico Vetorial SVG criado diretamente em código -->
-            <img src="WhatsApp Image 2026-08-10 at 13.05.44.jpeg" alt="Big Dimension Logo" style="width: 32px; height: 32px; object-fit: contain;">
-            <div class="logo-text">Big Dimension</div>
+        <div class="header-inner">
+            <div class="brand">
+                <img src="WhatsApp Image 2026-08-10 at 13.05.44.jpeg" alt="Big Dimension logo">
+                <div class="brand-name">Big Dimension</div>
+            </div>
+
+            <nav aria-label="Main navigation">
+                <a class="nav-link" href="#research">Research</a>
+                <a class="nav-link" href="#frameworks">Frameworks</a>
+            </nav>
         </div>
-        <nav>
-            <button class="nav-btn">Research</button>
-            <button class="nav-btn">Frameworks</button>
-        </nav>
     </header>
 
-    <!-- 🌌 HERO SECTION DE ENTRADA -->
-    <section class="hero-section">
-        <h1>Anchoring artificial intelligence to real molecular geometry.</h1>
-        <p>An independent research studio engineering a new class of responsive, agent-based systems and digital biochemistry.</p>
+    <main>
+        <section class="hero" id="research">
+            <div class="eyebrow">Independent research studio</div>
+            <h1>Anchoring intelligence to molecular reality.</h1>
+            <p>
+                An independent research studio engineering responsive, agent-based systems and digital biochemistry for a more precise and living form of intelligence.
+            </p>
+        </section>
+    </main>
+
+    <section class="quote-section" id="frameworks">
+        <div class="quote-grid">
+            <blockquote>“We build systems that remain legible to the geometry of the real world.”</blockquote>
+            <blockquote>“The future of intelligence is not abstract alone—it is embodied, responsive, and measurable.”</blockquote>
+            <blockquote>“Research begins where computation meets structure, signal, and meaning.”</blockquote>
+        </div>
     </section>
 
-    <!-- 🧱 GRELHA DE INVESTIGAÇÕES (DEEPMIND STYLE) -->
-    <div class="container">
-        <h2 class="section-title">Latest research</h2>
-        
-        <div class="grid">
-            <!-- Cartão 1 -->
-            <div class="card">
-                <span class="card-tag">Biochemistry</span>
-                <h3 class="card-title">Predicting autonomous agent behavior within dynamic synaptic structures.</h3>
-            </div>
-
-            <!-- Cartão 2 -->
-            <div class="card">
-                <span class="card-tag">Computational Physics</span>
-                <h3 class="card-title">Applying real-time electrostatic vector matrices to abstract computation.</h3>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPT PARA GARANTIR A SUAVIDADE DO LOADER -->
-    <script>
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                loader.style.visibility = 'hidden';
-            }, 3100); // 3.1 segundos para processar o fecho perfeito
-        });
-    </script>
-
-</body>
-</html>
-    <!-- 🏢 RODAPÉ COM AS REDES SOCIAIS (Estilo DeepMind) -->
-    <footer style="max-width: 1200px; margin: 80px auto 40px auto; padding: 40px; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
-        <div style="font-size: 14px; color: #6b7280; font-weight: 500;">
-            &copy; 2026 Big Dimension. All rights reserved.
-        </div>
-        <div style="display: flex; gap: 24px;">
-            <a href="https://x.com" target="_blank" style="font-size: 14px; color: #4b5563; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">X (Twitter)</a>
-            <a href="https://instagram.com" target="_blank" style="font-size: 14px; color: #4b5563; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Instagram</a>
+    <footer>
+        <div class="footer-copy">&copy; 2026 Big Dimension. All rights reserved.</div>
+        <div class="footer-links">
+            <a href="https://x.com" target="_blank" rel="noreferrer">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
         </div>
     </footer>
+</body>
+</html>
