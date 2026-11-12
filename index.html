@@ -1,3 +1,4 @@
+#Fundo Branco + Logo 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,4 +19,227 @@
     </style>
 </head>
 <body></body>
+</html>
+
+#PRE PÁGINA
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigDimension</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+            overflow-x: hidden;
+        }
+
+        /* --- ECRÃ DE INTRODUÇÃO (AZUL COBALTO) --- */
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #1D4ED8; /* Azul Cobalto */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #intro-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Nome da Organização em cima, branco e limpo */
+        .intro-title {
+            color: #FFFFFF;
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: titleAppear 0.8s ease forwards;
+        }
+
+        @keyframes titleAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Área do Átomo 3D */
+        #atom-canvas {
+            width: 320px;
+            height: 320px;
+        }
+
+        /* --- PÁGINA PRINCIPAL (APARECE DEPOIS) --- */
+        #main-site {
+            min-height: 100vh;
+            padding: 3rem 8%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #main-site h1 {
+            font-size: 2.2rem;
+            color: #1E293B;
+            margin-bottom: 1rem;
+        }
+
+        #main-site p {
+            color: #475569;
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+
+        .replay-btn {
+            background-color: #1D4ED8;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .replay-btn:hover {
+            background-color: #1E40AF;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ecrã de Entrada -->
+    <div id="intro-screen">
+        <div class="intro-title">BigDimension</div>
+        <canvas id="atom-canvas" width="640" height="640"></canvas>
+    </div>
+
+    <!-- Página Principal (Espaço reservado para construirmos a seguir) -->
+    <main id="main-site">
+        <h1>Bem-vinda à BigDimension</h1>
+        <p>A abertura com o átomo 3D funcionou. Esta é a página principal que aparece logo a seguir.</p>
+        <button class="replay-btn" onclick="replayIntro()">Ver abertura novamente</button>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('atom-canvas');
+        const ctx = canvas.getContext('2d');
+        const introScreen = document.getElementById('intro-screen');
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Configurações da órbita 3D
+        const orbitRadiusX = 210;
+        const orbitRadiusY = 75;
+        const tiltAngle = -0.42; // Inclinação da órbita em radianos
+        let angle = 0;
+        let introTimer;
+
+        // Função para desenhar uma esfera com aspeto 3D (luz e sombra)
+        function drawSphere3D(x, y, radius, colorLight, colorMain, colorDark) {
+            const grad = ctx.createRadialGradient(
+                x - radius * 0.3, y - radius * 0.3, radius * 0.1,
+                x, y, radius
+            );
+            grad.addColorStop(0, colorLight);
+            grad.addColorStop(0.55, colorMain);
+            grad.addColorStop(1, colorDark);
+
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+        }
+
+        // Função para desenhar metade da linha da órbita
+        function drawOrbitHalf(startAngle, endAngle) {
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(tiltAngle);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, orbitRadiusX, orbitRadiusY, 0, startAngle, endAngle);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function animateAtom() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Calcular posição 3D do eletrão
+            const rawX = Math.cos(angle) * orbitRadiusX;
+            const rawY = Math.sin(angle) * orbitRadiusY;
+
+            // Aplicar inclinação
+            const electronX = centerX + (rawX * Math.cos(tiltAngle) - rawY * Math.sin(tiltAngle));
+            const electronY = centerY + (rawX * Math.sin(tiltAngle) + rawY * Math.cos(tiltAngle));
+
+            // Profundidade Z (negativo = atrás do núcleo, positivo = à frente)
+            const zDepth = Math.sin(angle);
+            const electronRadius = 16 + zDepth * 4; // Fica ligeiramente maior quando vem para a frente
+
+            // 1. Desenhar metade de trás da órbita
+            drawOrbitHalf(Math.PI, Math.PI * 2);
+
+            // 2. Se o eletrão estiver atrás, desenhar antes do núcleo
+            if (zDepth < 0) {
+                drawSphere3D(electronX, electronY, electronRadius, '#E0F2FE', '#38BDF8', '#0284C7');
+            }
+
+            // 3. Desenhar o Núcleo Magenta em 3D no centro
+            drawSphere3D(centerX, centerY, 44, '#F472B6', '#DB2777', '#831843');
+
+            // 4. Desenhar metade da frente da órbita
+            drawOrbitHalf(0, Math.PI);
+
+            // 5. Se o eletrão estiver à frente, desenhar por cima do núcleo
+            if (zDepth >= 0) {
+                drawSphere3D(electronX, electronY, electronRadius, '#E0F2FE', '#38BDF8', '#0284C7');
+            }
+
+            // Velocidade da rotação
+            angle += 0.045;
+            requestAnimationFrame(animateAtom);
+        }
+
+        function startIntroTimer() {
+            clearTimeout(introTimer);
+            introScreen.classList.remove('fade-out');
+            introTimer = setTimeout(() => {
+                introScreen.classList.add('fade-out');
+            }, 3500); // Desaparece após 3.5 segundos
+        }
+
+        function replayIntro() {
+            angle = 0;
+            startIntroTimer();
+        }
+
+        // Iniciar animação
+        animateAtom();
+        startIntroTimer();
+    </script>
+
+</body>
 </html>
