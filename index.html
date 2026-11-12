@@ -23,157 +23,7 @@
 
 #PRE PÁGINA
 
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigDimension</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-            background-color: #F8FAFC;
-            color: #0F172A;
-            overflow-x: hidden;
-        }
-
-        /* --- ECRÃ DE INTRODUÇÃO (PRETO AZUL-ESCURO) --- */
-        #intro-screen {
-            position: fixed;
-            inset: 0;
-            background-color: #040914; /* Preto azul-escuro */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-
-        #intro-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* Título BigDimension com Fade-In suave */
-        .intro-title {
-            color: #FFFFFF;
-            font-size: 2.8rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 10px;
-            opacity: 0;
-            animation: pureFadeIn 1.4s ease forwards;
-        }
-
-        @keyframes pureFadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        /* Área do Átomo Pixelizado */
-        #atom-canvas {
-            width: 300px;
-            height: 240px;
-            image-rendering: pixelated; /* Mantém os píxeis nítidos sem desfocar */
-        }
-
-        /* Pontinhos de Carregamento (. . . .) */
-        .loading-dots {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-            height: 12px;
-            align-items: center;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #FFFFFF;
-            opacity: 0;
-            animation: dotStep 2.4s infinite;
-        }
-
-        .dot:nth-child(1) { animation-delay: 0.2s; }
-        .dot:nth-child(2) { animation-delay: 0.6s; }
-        .dot:nth-child(3) { animation-delay: 1.0s; }
-        .dot:nth-child(4) { animation-delay: 1.4s; }
-
-        @keyframes dotStep {
-            0%, 15% { opacity: 0; }
-            20%, 85% { opacity: 1; }
-            90%, 100% { opacity: 0; }
-        }
-
-        /* --- PÁGINA PRINCIPAL --- */
-        #main-site {
-            min-height: 100vh;
-            padding: 3rem 8%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        #main-site h1 {
-            font-size: 2.2rem;
-            color: #1E293B;
-            margin-bottom: 1rem;
-        }
-
-        #main-site p {
-            color: #475569;
-            max-width: 500px;
-            margin-bottom: 2rem;
-        }
-
-        .replay-btn {
-            background-color: #1D4ED8;
-            color: #FFFFFF;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .replay-btn:hover {
-            background-color: #1E40AF;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Ecrã de Entrada -->
-    <div id="intro-screen">
-        <div class="intro-title">BigDimension</div>
-        <!-- Resolução baixa interna (150x120) esticada para criar o efeito Pixel Art real -->
-        <canvas id="atom-canvas" width="150" height="120"></canvas>
-        <div class="loading-dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
-    </div>
-
-    <!-- Página Principal -->
-    <main id="main-site">
-        <h1>Bem-vinda à BigDimension</h1>
-        <p>A nova abertura pixelizada está pronta. Quando estiveres satisfeita, avançamos para o design desta página.</p>
-        <button class="replay-btn" onclick="replayIntro()">Ver abertura novamente</button>
-    </main>
-
-    <script>
+<script>
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
@@ -184,18 +34,17 @@
 
         const orbitRadiusX = 52;
         const orbitRadiusY = 18;
-        const tiltAngle = -0.42;
+        const tiltAngle1 = -0.45; // Órbita principal (com o eletrão)
+        const tiltAngle2 = 0.45;  // Segunda órbita cruzada (vazia)
         let angle = 0;
         let introTimer;
 
-        // Desenhar esfera em estilo Pixel Art (com degraus de cor)
         function drawPixelSphere(cx, cy, radius, colorHighlight, colorMain, colorShadow) {
             const r = Math.round(radius);
             for (let y = -r; y <= r; y++) {
                 for (let x = -r; x <= r; x++) {
                     const distSq = x * x + y * y;
                     if (distSq <= r * r) {
-                        // Escolher cor consoante a posição para dar volume 3D em píxeis
                         if (x < -r * 0.2 && y < -r * 0.2 && distSq < (r * 0.65) * (r * 0.65)) {
                             ctx.fillStyle = colorHighlight;
                         } else if (x > r * 0.25 || y > r * 0.25) {
@@ -209,8 +58,8 @@
             }
         }
 
-        // Desenhar órbita em píxeis
-        function drawPixelOrbit(isFront) {
+        // Agora a função aceita qualquer inclinação (tilt) para desenhar as duas órbitas
+        function drawPixelOrbit(isFront, tilt) {
             ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
             const steps = 90;
             for (let i = 0; i < steps; i++) {
@@ -219,8 +68,8 @@
                 if ((isFront && z >= 0) || (!isFront && z < 0)) {
                     const rx = Math.cos(a) * orbitRadiusX;
                     const ry = Math.sin(a) * orbitRadiusY;
-                    const px = Math.round(centerX + (rx * Math.cos(tiltAngle) - ry * Math.sin(tiltAngle)));
-                    const py = Math.round(centerY + (rx * Math.sin(tiltAngle) + ry * Math.cos(tiltAngle)));
+                    const px = Math.round(centerX + (rx * Math.cos(tilt) - ry * Math.sin(tilt)));
+                    const py = Math.round(centerY + (rx * Math.sin(tilt) + ry * Math.cos(tilt)));
                     ctx.fillRect(px, py, 1, 1);
                 }
             }
@@ -232,16 +81,17 @@
             const rawX = Math.cos(angle) * orbitRadiusX;
             const rawY = Math.sin(angle) * orbitRadiusY;
 
-            const electronX = centerX + (rawX * Math.cos(tiltAngle) - rawY * Math.sin(tiltAngle));
-            const electronY = centerY + (rawX * Math.sin(tiltAngle) + rawY * Math.cos(tiltAngle));
+            const electronX = centerX + (rawX * Math.cos(tiltAngle1) - rawY * Math.sin(tiltAngle1));
+            const electronY = centerY + (rawX * Math.sin(tiltAngle1) + rawY * Math.cos(tiltAngle1));
 
             const zDepth = Math.sin(angle);
             const electronRadius = 4.2 + zDepth * 1.1;
 
-            // 1. Órbita de trás
-            drawPixelOrbit(false);
+            // 1. Parte de trás das duas órbitas
+            drawPixelOrbit(false, tiltAngle1);
+            drawPixelOrbit(false, tiltAngle2);
 
-            // 2. Eletrão atrás do núcleo (Azul elétrico forte)
+            // 2. Eletrão atrás do núcleo
             if (zDepth < 0) {
                 drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
             }
@@ -249,8 +99,9 @@
             // 3. Núcleo Magenta Intenso no centro
             drawPixelSphere(centerX, centerY, 11, '#F9A8D4', '#FF007F', '#9D174D');
 
-            // 4. Órbita da frente
-            drawPixelOrbit(true);
+            // 4. Parte da frente das duas órbitas
+            drawPixelOrbit(true, tiltAngle1);
+            drawPixelOrbit(true, tiltAngle2);
 
             // 5. Eletrão à frente do núcleo
             if (zDepth >= 0) {
@@ -264,7 +115,6 @@
         function startIntroTimer() {
             clearTimeout(introTimer);
             introScreen.classList.remove('fade-out');
-            // Reiniciar animação do título e dos pontos
             const title = document.querySelector('.intro-title');
             title.style.animation = 'none';
             title.offsetHeight; 
@@ -283,6 +133,3 @@
         animateAtom();
         startIntroTimer();
     </script>
-
-</body>
-</html>
