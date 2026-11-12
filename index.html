@@ -1,4 +1,4 @@
-#Fundo Branco + Logo 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,11 +43,11 @@
             overflow-x: hidden;
         }
 
-        /* --- ECRÃ DE INTRODUÇÃO (AZUL COBALTO) --- */
+        /* --- ECRÃ DE INTRODUÇÃO (PRETO AZUL-ESCURO) --- */
         #intro-screen {
             position: fixed;
             inset: 0;
-            background-color: #1D4ED8; /* Azul Cobalto */
+            background-color: #040914; /* Preto azul-escuro */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -61,32 +61,58 @@
             visibility: hidden;
         }
 
-        /* Nome da Organização em cima, branco e limpo */
+        /* Título BigDimension com Fade-In suave */
         .intro-title {
             color: #FFFFFF;
-            font-size: 2.6rem;
+            font-size: 2.8rem;
             font-weight: 700;
             letter-spacing: -0.5px;
             margin-bottom: 10px;
             opacity: 0;
-            transform: translateY(-10px);
-            animation: titleAppear 0.8s ease forwards;
+            animation: pureFadeIn 1.4s ease forwards;
         }
 
-        @keyframes titleAppear {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes pureFadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
-        /* Área do Átomo 3D */
+        /* Área do Átomo Pixelizado */
         #atom-canvas {
-            width: 320px;
-            height: 320px;
+            width: 300px;
+            height: 240px;
+            image-rendering: pixelated; /* Mantém os píxeis nítidos sem desfocar */
         }
 
-        /* --- PÁGINA PRINCIPAL (APARECE DEPOIS) --- */
+        /* Pontinhos de Carregamento (. . . .) */
+        .loading-dots {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            height: 12px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #FFFFFF;
+            opacity: 0;
+            animation: dotStep 2.4s infinite;
+        }
+
+        .dot:nth-child(1) { animation-delay: 0.2s; }
+        .dot:nth-child(2) { animation-delay: 0.6s; }
+        .dot:nth-child(3) { animation-delay: 1.0s; }
+        .dot:nth-child(4) { animation-delay: 1.4s; }
+
+        @keyframes dotStep {
+            0%, 15% { opacity: 0; }
+            20%, 85% { opacity: 1; }
+            90%, 100% { opacity: 0; }
+        }
+
+        /* --- PÁGINA PRINCIPAL --- */
         #main-site {
             min-height: 100vh;
             padding: 3rem 8%;
@@ -130,105 +156,123 @@
     <!-- Ecrã de Entrada -->
     <div id="intro-screen">
         <div class="intro-title">BigDimension</div>
-        <canvas id="atom-canvas" width="640" height="640"></canvas>
+        <!-- Resolução baixa interna (150x120) esticada para criar o efeito Pixel Art real -->
+        <canvas id="atom-canvas" width="150" height="120"></canvas>
+        <div class="loading-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
     </div>
 
-    <!-- Página Principal (Espaço reservado para construirmos a seguir) -->
+    <!-- Página Principal -->
     <main id="main-site">
         <h1>Bem-vinda à BigDimension</h1>
-        <p>A abertura com o átomo 3D funcionou. Esta é a página principal que aparece logo a seguir.</p>
+        <p>A nova abertura pixelizada está pronta. Quando estiveres satisfeita, avançamos para o design desta página.</p>
         <button class="replay-btn" onclick="replayIntro()">Ver abertura novamente</button>
     </main>
 
     <script>
         const canvas = document.getElementById('atom-canvas');
         const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
         const introScreen = document.getElementById('intro-screen');
+        const centerX = Math.floor(canvas.width / 2);
+        const centerY = Math.floor(canvas.height / 2);
 
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-
-        // Configurações da órbita 3D
-        const orbitRadiusX = 210;
-        const orbitRadiusY = 75;
-        const tiltAngle = -0.42; // Inclinação da órbita em radianos
+        const orbitRadiusX = 52;
+        const orbitRadiusY = 18;
+        const tiltAngle = -0.42;
         let angle = 0;
         let introTimer;
 
-        // Função para desenhar uma esfera com aspeto 3D (luz e sombra)
-        function drawSphere3D(x, y, radius, colorLight, colorMain, colorDark) {
-            const grad = ctx.createRadialGradient(
-                x - radius * 0.3, y - radius * 0.3, radius * 0.1,
-                x, y, radius
-            );
-            grad.addColorStop(0, colorLight);
-            grad.addColorStop(0.55, colorMain);
-            grad.addColorStop(1, colorDark);
-
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.fillStyle = grad;
-            ctx.fill();
+        // Desenhar esfera em estilo Pixel Art (com degraus de cor)
+        function drawPixelSphere(cx, cy, radius, colorHighlight, colorMain, colorShadow) {
+            const r = Math.round(radius);
+            for (let y = -r; y <= r; y++) {
+                for (let x = -r; x <= r; x++) {
+                    const distSq = x * x + y * y;
+                    if (distSq <= r * r) {
+                        // Escolher cor consoante a posição para dar volume 3D em píxeis
+                        if (x < -r * 0.2 && y < -r * 0.2 && distSq < (r * 0.65) * (r * 0.65)) {
+                            ctx.fillStyle = colorHighlight;
+                        } else if (x > r * 0.25 || y > r * 0.25) {
+                            ctx.fillStyle = colorShadow;
+                        } else {
+                            ctx.fillStyle = colorMain;
+                        }
+                        ctx.fillRect(Math.round(cx + x), Math.round(cy + y), 1, 1);
+                    }
+                }
+            }
         }
 
-        // Função para desenhar metade da linha da órbita
-        function drawOrbitHalf(startAngle, endAngle) {
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(tiltAngle);
-            ctx.beginPath();
-            ctx.ellipse(0, 0, orbitRadiusX, orbitRadiusY, 0, startAngle, endAngle);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-            ctx.restore();
+        // Desenhar órbita em píxeis
+        function drawPixelOrbit(isFront) {
+            ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
+            const steps = 90;
+            for (let i = 0; i < steps; i++) {
+                const a = (i / steps) * Math.PI * 2;
+                const z = Math.sin(a);
+                if ((isFront && z >= 0) || (!isFront && z < 0)) {
+                    const rx = Math.cos(a) * orbitRadiusX;
+                    const ry = Math.sin(a) * orbitRadiusY;
+                    const px = Math.round(centerX + (rx * Math.cos(tiltAngle) - ry * Math.sin(tiltAngle)));
+                    const py = Math.round(centerY + (rx * Math.sin(tiltAngle) + ry * Math.cos(tiltAngle)));
+                    ctx.fillRect(px, py, 1, 1);
+                }
+            }
         }
 
         function animateAtom() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Calcular posição 3D do eletrão
             const rawX = Math.cos(angle) * orbitRadiusX;
             const rawY = Math.sin(angle) * orbitRadiusY;
 
-            // Aplicar inclinação
             const electronX = centerX + (rawX * Math.cos(tiltAngle) - rawY * Math.sin(tiltAngle));
             const electronY = centerY + (rawX * Math.sin(tiltAngle) + rawY * Math.cos(tiltAngle));
 
-            // Profundidade Z (negativo = atrás do núcleo, positivo = à frente)
             const zDepth = Math.sin(angle);
-            const electronRadius = 16 + zDepth * 4; // Fica ligeiramente maior quando vem para a frente
+            const electronRadius = 4.2 + zDepth * 1.1;
 
-            // 1. Desenhar metade de trás da órbita
-            drawOrbitHalf(Math.PI, Math.PI * 2);
+            // 1. Órbita de trás
+            drawPixelOrbit(false);
 
-            // 2. Se o eletrão estiver atrás, desenhar antes do núcleo
+            // 2. Eletrão atrás do núcleo (Azul elétrico forte)
             if (zDepth < 0) {
-                drawSphere3D(electronX, electronY, electronRadius, '#E0F2FE', '#38BDF8', '#0284C7');
+                drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
             }
 
-            // 3. Desenhar o Núcleo Magenta em 3D no centro
-            drawSphere3D(centerX, centerY, 44, '#F472B6', '#DB2777', '#831843');
+            // 3. Núcleo Magenta Intenso no centro
+            drawPixelSphere(centerX, centerY, 11, '#F9A8D4', '#FF007F', '#9D174D');
 
-            // 4. Desenhar metade da frente da órbita
-            drawOrbitHalf(0, Math.PI);
+            // 4. Órbita da frente
+            drawPixelOrbit(true);
 
-            // 5. Se o eletrão estiver à frente, desenhar por cima do núcleo
+            // 5. Eletrão à frente do núcleo
             if (zDepth >= 0) {
-                drawSphere3D(electronX, electronY, electronRadius, '#E0F2FE', '#38BDF8', '#0284C7');
+                drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
             }
 
-            // Velocidade da rotação
-            angle += 0.045;
+            angle += 0.048;
             requestAnimationFrame(animateAtom);
         }
 
         function startIntroTimer() {
             clearTimeout(introTimer);
             introScreen.classList.remove('fade-out');
+            // Reiniciar animação do título e dos pontos
+            const title = document.querySelector('.intro-title');
+            title.style.animation = 'none';
+            title.offsetHeight; 
+            title.style.animation = null;
+
             introTimer = setTimeout(() => {
                 introScreen.classList.add('fade-out');
-            }, 3500); // Desaparece após 3.5 segundos
+            }, 3800);
         }
 
         function replayIntro() {
@@ -236,7 +280,6 @@
             startIntroTimer();
         }
 
-        // Iniciar animação
         animateAtom();
         startIntroTimer();
     </script>
