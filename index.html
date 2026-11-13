@@ -1,28 +1,3 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Big Dimension</title>
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <style>
-        html, body {
-            min-height: 100%;
-            margin: 0;
-            background: #ffffff;
-        }
-
-        body {
-            min-height: 100vh;
-        }
-    </style>
-</head>
-<body></body>
-</html>
-
-#PRE PÁGINA
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -47,7 +22,7 @@
         #intro-screen {
             position: fixed;
             inset: 0;
-            background-color: #040914; /* Preto azul-escuro */
+            background-color: #040914;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -81,7 +56,7 @@
         #atom-canvas {
             width: 300px;
             height: 240px;
-            image-rendering: pixelated; /* Mantém os píxeis nítidos sem desfocar */
+            image-rendering: pixelated;
         }
 
         /* Pontinhos de Carregamento (. . . .) */
@@ -111,44 +86,6 @@
             20%, 85% { opacity: 1; }
             90%, 100% { opacity: 0; }
         }
-
-        /* --- PÁGINA PRINCIPAL --- */
-        #main-site {
-            min-height: 100vh;
-            padding: 3rem 8%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        #main-site h1 {
-            font-size: 2.2rem;
-            color: #1E293B;
-            margin-bottom: 1rem;
-        }
-
-        #main-site p {
-            color: #475569;
-            max-width: 500px;
-            margin-bottom: 2rem;
-        }
-
-        .replay-btn {
-            background-color: #1D4ED8;
-            color: #FFFFFF;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .replay-btn:hover {
-            background-color: #1E40AF;
-        }
     </style>
 </head>
 <body>
@@ -156,7 +93,6 @@
     <!-- Ecrã de Entrada -->
     <div id="intro-screen">
         <div class="intro-title">BigDimension</div>
-        <!-- Resolução baixa interna (150x120) esticada para criar o efeito Pixel Art real -->
         <canvas id="atom-canvas" width="150" height="120"></canvas>
         <div class="loading-dots">
             <span class="dot"></span>
@@ -165,13 +101,6 @@
             <span class="dot"></span>
         </div>
     </div>
-
-    <!-- Página Principal -->
-    <main id="main-site">
-        <h1>Bem-vinda à BigDimension</h1>
-        <p>A nova abertura pixelizada está pronta. Quando estiveres satisfeita, avançamos para o design desta página.</p>
-        <button class="replay-btn" onclick="replayIntro()">Ver abertura novamente</button>
-    </main>
 
     <script>
         const canvas = document.getElementById('atom-canvas');
@@ -188,14 +117,12 @@
         let angle = 0;
         let introTimer;
 
-        // Desenhar esfera em estilo Pixel Art (com degraus de cor)
         function drawPixelSphere(cx, cy, radius, colorHighlight, colorMain, colorShadow) {
             const r = Math.round(radius);
             for (let y = -r; y <= r; y++) {
                 for (let x = -r; x <= r; x++) {
                     const distSq = x * x + y * y;
                     if (distSq <= r * r) {
-                        // Escolher cor consoante a posição para dar volume 3D em píxeis
                         if (x < -r * 0.2 && y < -r * 0.2 && distSq < (r * 0.65) * (r * 0.65)) {
                             ctx.fillStyle = colorHighlight;
                         } else if (x > r * 0.25 || y > r * 0.25) {
@@ -209,7 +136,6 @@
             }
         }
 
-        // Desenhar órbita em píxeis
         function drawPixelOrbit(isFront) {
             ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
             const steps = 90;
@@ -238,21 +164,16 @@
             const zDepth = Math.sin(angle);
             const electronRadius = 4.2 + zDepth * 1.1;
 
-            // 1. Órbita de trás
             drawPixelOrbit(false);
 
-            // 2. Eletrão atrás do núcleo (Azul elétrico forte)
             if (zDepth < 0) {
                 drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
             }
 
-            // 3. Núcleo Magenta Intenso no centro
             drawPixelSphere(centerX, centerY, 11, '#F9A8D4', '#FF007F', '#9D174D');
 
-            // 4. Órbita da frente
             drawPixelOrbit(true);
 
-            // 5. Eletrão à frente do núcleo
             if (zDepth >= 0) {
                 drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
             }
@@ -264,20 +185,14 @@
         function startIntroTimer() {
             clearTimeout(introTimer);
             introScreen.classList.remove('fade-out');
-               // Reiniciar animação do título e dos pontos
             const title = document.querySelector('.intro-title');
             title.style.animation = 'none';
-            title.offsetHeight; 
+            title.offsetHeight;
             title.style.animation = null;
 
             introTimer = setTimeout(() => {
                 introScreen.classList.add('fade-out');
             }, 3800);
-        }
-
-        function replayIntro() {
-            angle = 0;
-            startIntroTimer();
         }
 
         animateAtom();
@@ -286,4 +201,3 @@
 
 </body>
 </html>
-         
