@@ -114,6 +114,9 @@
         const orbitRadiusX = 52;
         const orbitRadiusY = 18;
         const tiltAngle = -0.42;
+        const outerOrbitRadiusX = 64;
+        const outerOrbitRadiusY = 25;
+        const outerOrbitTiltAngle = 0.65;
         let angle = 0;
         let introTimer;
 
@@ -136,17 +139,17 @@
             }
         }
 
-        function drawPixelOrbit(isFront) {
-            ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
+        function drawPixelOrbit(isFront, radiusX, radiusY, orbitTiltAngle, opacity) {
+            ctx.fillStyle = `rgba(148, 163, 184, ${opacity})`;
             const steps = 90;
             for (let i = 0; i < steps; i++) {
                 const a = (i / steps) * Math.PI * 2;
                 const z = Math.sin(a);
                 if ((isFront && z >= 0) || (!isFront && z < 0)) {
-                    const rx = Math.cos(a) * orbitRadiusX;
-                    const ry = Math.sin(a) * orbitRadiusY;
-                    const px = Math.round(centerX + (rx * Math.cos(tiltAngle) - ry * Math.sin(tiltAngle)));
-                    const py = Math.round(centerY + (rx * Math.sin(tiltAngle) + ry * Math.cos(tiltAngle)));
+                    const rx = Math.cos(a) * radiusX;
+                    const ry = Math.sin(a) * radiusY;
+                    const px = Math.round(centerX + (rx * Math.cos(orbitTiltAngle) - ry * Math.sin(orbitTiltAngle)));
+                    const py = Math.round(centerY + (rx * Math.sin(orbitTiltAngle) + ry * Math.cos(orbitTiltAngle)));
                     ctx.fillRect(px, py, 1, 1);
                 }
             }
@@ -164,7 +167,9 @@
             const zDepth = Math.sin(angle);
             const electronRadius = 4.2 + zDepth * 1.1;
 
-            drawPixelOrbit(false);
+            // Órbitas de trás: a exterior é mais discreta e não tem eletrão.
+            drawPixelOrbit(false, outerOrbitRadiusX, outerOrbitRadiusY, outerOrbitTiltAngle, 0.2);
+            drawPixelOrbit(false, orbitRadiusX, orbitRadiusY, tiltAngle, 0.35);
 
             if (zDepth < 0) {
                 drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
@@ -172,7 +177,8 @@
 
             drawPixelSphere(centerX, centerY, 11, '#F9A8D4', '#FF007F', '#9D174D');
 
-            drawPixelOrbit(true);
+            drawPixelOrbit(true, orbitRadiusX, orbitRadiusY, tiltAngle, 0.35);
+            drawPixelOrbit(true, outerOrbitRadiusX, outerOrbitRadiusY, outerOrbitTiltAngle, 0.2);
 
             if (zDepth >= 0) {
                 drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
