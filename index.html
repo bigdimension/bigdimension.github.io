@@ -264,4 +264,26 @@
         function startIntroTimer() {
             clearTimeout(introTimer);
             introScreen.classList.remove('fade-out');
+               // Reiniciar animação do título e dos pontos
+            const title = document.querySelector('.intro-title');
+            title.style.animation = 'none';
+            title.offsetHeight; 
+            title.style.animation = null;
+
+            introTimer = setTimeout(() => {
+                introScreen.classList.add('fade-out');
+            }, 3800);
+        }
+
+        function replayIntro() {
+            angle = 0;
+            startIntroTimer();
+        }
+
+        animateAtom();
+        startIntroTimer();
+    </script>
+
+</body>
+</html>
          
