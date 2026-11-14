@@ -1,209 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BigDimension</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">BigDimension</div>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#science">Science</a>
+        <a href="#proteins">Proteins</a>
+        <a href="#about">About</a>
+      </nav>
+    </header>
 
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-            background-color: #F8FAFC;
-            color: #0F172A;
-            overflow-x: hidden;
-        }
+    <main class="page-shell">
+      <section class="protein-grid" aria-label="Estruturas protéicas">
+        <article class="protein-card blue" aria-label="Proteína azul">
+          <canvas></canvas>
+          <div class="drag-indicator" aria-hidden="true"></div>
+        </article>
 
-        /* --- ECRÃ DE INTRODUÇÃO (PRETO AZUL-ESCURO) --- */
-        #intro-screen {
-            position: fixed;
-            inset: 0;
-            background-color: #040914;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
+        <article class="protein-card purple" aria-label="Proteína roxa">
+          <canvas></canvas>
+          <div class="drag-indicator" aria-hidden="true"></div>
+        </article>
 
-        #intro-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
+        <article class="protein-card green" aria-label="Proteína verde">
+          <canvas></canvas>
+          <div class="drag-indicator" aria-hidden="true"></div>
+        </article>
+      </section>
+    </main>
 
-        /* Título BigDimension com Fade-In suave */
-        .intro-title {
-            color: #FFFFFF;
-            font-size: 2.8rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 10px;
-            opacity: 0;
-            animation: pureFadeIn 1.4s ease forwards;
-        }
-
-        @keyframes pureFadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        /* Área do Átomo Pixelizado */
-        #atom-canvas {
-            width: 300px;
-            height: 240px;
-            image-rendering: pixelated;
-        }
-
-        /* Pontinhos de Carregamento (. . . .) */
-        .loading-dots {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-            height: 12px;
-            align-items: center;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #FFFFFF;
-            opacity: 0;
-            animation: dotStep 2.4s infinite;
-        }
-
-        .dot:nth-child(1) { animation-delay: 0.2s; }
-        .dot:nth-child(2) { animation-delay: 0.6s; }
-        .dot:nth-child(3) { animation-delay: 1.0s; }
-        .dot:nth-child(4) { animation-delay: 1.4s; }
-
-        @keyframes dotStep {
-            0%, 15% { opacity: 0; }
-            20%, 85% { opacity: 1; }
-            90%, 100% { opacity: 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Ecrã de Entrada -->
-    <div id="intro-screen">
-        <div class="intro-title">BigDimension</div>
-        <canvas id="atom-canvas" width="150" height="120"></canvas>
-        <div class="loading-dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
-    </div>
-
-    <script>
-        const canvas = document.getElementById('atom-canvas');
-        const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
-
-        const introScreen = document.getElementById('intro-screen');
-        const centerX = Math.floor(canvas.width / 2);
-        const centerY = Math.floor(canvas.height / 2);
-
-        const orbitRadiusX = 52;
-        const orbitRadiusY = 18;
-        const tiltAngle = -0.42;
-        const outerOrbitRadiusX = 64;
-        const outerOrbitRadiusY = 25;
-        const outerOrbitTiltAngle = 0.65;
-        let angle = 0;
-        let introTimer;
-
-        function drawPixelSphere(cx, cy, radius, colorHighlight, colorMain, colorShadow) {
-            const r = Math.round(radius);
-            for (let y = -r; y <= r; y++) {
-                for (let x = -r; x <= r; x++) {
-                    const distSq = x * x + y * y;
-                    if (distSq <= r * r) {
-                        if (x < -r * 0.2 && y < -r * 0.2 && distSq < (r * 0.65) * (r * 0.65)) {
-                            ctx.fillStyle = colorHighlight;
-                        } else if (x > r * 0.25 || y > r * 0.25) {
-                            ctx.fillStyle = colorShadow;
-                        } else {
-                            ctx.fillStyle = colorMain;
-                        }
-                        ctx.fillRect(Math.round(cx + x), Math.round(cy + y), 1, 1);
-                    }
-                }
-            }
-        }
-
-        function drawPixelOrbit(isFront, radiusX, radiusY, orbitTiltAngle, opacity) {
-            ctx.fillStyle = `rgba(148, 163, 184, ${opacity})`;
-            const steps = 90;
-            for (let i = 0; i < steps; i++) {
-                const a = (i / steps) * Math.PI * 2;
-                const z = Math.sin(a);
-                if ((isFront && z >= 0) || (!isFront && z < 0)) {
-                    const rx = Math.cos(a) * radiusX;
-                    const ry = Math.sin(a) * radiusY;
-                    const px = Math.round(centerX + (rx * Math.cos(orbitTiltAngle) - ry * Math.sin(orbitTiltAngle)));
-                    const py = Math.round(centerY + (rx * Math.sin(orbitTiltAngle) + ry * Math.cos(orbitTiltAngle)));
-                    ctx.fillRect(px, py, 1, 1);
-                }
-            }
-        }
-
-        function animateAtom() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const rawX = Math.cos(angle) * orbitRadiusX;
-            const rawY = Math.sin(angle) * orbitRadiusY;
-
-            const electronX = centerX + (rawX * Math.cos(tiltAngle) - rawY * Math.sin(tiltAngle));
-            const electronY = centerY + (rawX * Math.sin(tiltAngle) + rawY * Math.cos(tiltAngle));
-
-            const zDepth = Math.sin(angle);
-            const electronRadius = 4.2 + zDepth * 1.1;
-
-            // Órbitas de trás: a exterior é mais discreta e não tem eletrão.
-            drawPixelOrbit(false, outerOrbitRadiusX, outerOrbitRadiusY, outerOrbitTiltAngle, 0.2);
-            drawPixelOrbit(false, orbitRadiusX, orbitRadiusY, tiltAngle, 0.35);
-
-            if (zDepth < 0) {
-                drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
-            }
-
-            drawPixelSphere(centerX, centerY, 11, '#F9A8D4', '#FF007F', '#9D174D');
-
-            drawPixelOrbit(true, orbitRadiusX, orbitRadiusY, tiltAngle, 0.35);
-            drawPixelOrbit(true, outerOrbitRadiusX, outerOrbitRadiusY, outerOrbitTiltAngle, 0.2);
-
-            if (zDepth >= 0) {
-                drawPixelSphere(electronX, electronY, electronRadius, '#BAE6FD', '#00D8FF', '#0284C7');
-            }
-
-            angle += 0.048;
-            requestAnimationFrame(animateAtom);
-        }
-
-        function startIntroTimer() {
-            clearTimeout(introTimer);
-            introScreen.classList.remove('fade-out');
-            const title = document.querySelector('.intro-title');
-            title.style.animation = 'none';
-            title.offsetHeight;
-            title.style.animation = null;
-
-            introTimer = setTimeout(() => {
-                introScreen.classList.add('fade-out');
-            }, 3800);
-        }
-
-        animateAtom();
-        startIntroTimer();
-    </script>
-
-</body>
+    <script src="js/main.js"></script>
+  </body>
 </html>
