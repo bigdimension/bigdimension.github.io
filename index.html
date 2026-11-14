@@ -207,3 +207,12 @@
 
 </body>
 </html>
+
+
+import py3Dmol
+# Puxar a estrutura tridimensional do recetor 1M2Z
+visualizador = py3Dmol.view(query='pdb:1M2Z')
+visualizador.setStyle({'cartoon': {'color': 'spectrum'}})
+visualizador.addSurface(py3Dmol.VDW, {'opacity': 0.3, 'color': 'white'})
+visualizador.zoomTo()
+visualizador.show() 
